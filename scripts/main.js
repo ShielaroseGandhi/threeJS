@@ -22,7 +22,8 @@ function main() {
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
   // create basic material for the box and set its colour
-  const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 }); // 6 digit hex colour values
+  //   const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 }); // 6 digit hex colour values
+  const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // Mesh Basic Material is not affected by lights, so I had to change the material
 
   // create a mesh -- combination of geometry and material, and the position, orientation, and scale
   const cube = new THREE.Mesh(geometry, material);
@@ -32,6 +33,13 @@ function main() {
 
   //   // render the scene
   //   renderer.render(scene, camera);
+
+  // add directional lighting
+  const color = 0xffffff;
+  const intensity = 1;
+  const light = new THREE.DirectionalLight(color, intensity);
+  light.position.set(-1, 2, 4);
+  scene.add(light);
 
   // animate cube
   function render(time) {
