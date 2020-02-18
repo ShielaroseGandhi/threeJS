@@ -21,15 +21,34 @@ function main() {
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
+  // add more cubes with different colours, but same geometry
+  function makeInstance(geometry, color, x) {
+    const material = new THREE.MeshPhongMaterial({ color });
+
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    cube.position.x = x;
+
+    return cube;
+  }
+
+  // create cubes with different colours
+  const cubes = [
+    makeInstance(geometry, 0x44aa88, 0),
+    makeInstance(geometry, 0x8844aa, -2),
+    makeInstance(geometry, 0xaa8844, 2)
+  ];
+
   // create basic material for the box and set its colour
   //   const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 }); // 6 digit hex colour values
-  const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // Mesh Basic Material is not affected by lights, so I had to change the material
+  //   const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 }); // Mesh Basic Material is not affected by lights, so I had to change the material
 
   // create a mesh -- combination of geometry and material, and the position, orientation, and scale
-  const cube = new THREE.Mesh(geometry, material);
+  //   const cube = new THREE.Mesh(geometry, material);
 
   // add mesh to the scene
-  scene.add(cube);
+  //   scene.add(cube);
 
   //   // render the scene
   //   renderer.render(scene, camera);
@@ -44,8 +63,16 @@ function main() {
   // animate cube
   function render(time) {
     time *= 0.001; // convert time into seconds
-    cube.rotation.x = time;
-    cube.rotation.y = time;
+    // cube.rotation.x = time;
+    // cube.rotation.y = time;
+
+    // give each cube a different rotation
+    cubes.forEach((cube, index) => {
+      const speed = 1 + index * 0.1;
+      const rot = time * speed;
+      cube.rotation.x = rot;
+      cube.rotation.y = rot;
+    });
 
     renderer.render(scene, camera);
 
