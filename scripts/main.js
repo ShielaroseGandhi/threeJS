@@ -60,11 +60,38 @@ function main() {
   light.position.set(-1, 2, 4);
   scene.add(light);
 
+  // check if the renderer's canvas is not already the size it is being displayed as and if so set its size
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+
+    //for HD displays
+    const pixelRatio = window.devicePixelRatio;
+    const width = (canvas.clientWidth * pixelRatio) | 0;
+    const height = (canvas.clientHeight * pixelRatio) | 0;
+
+    // if you don't want to adjust to pixel ratios, then use below code for width and height
+    // const width = canvas.clientWidth;
+    // const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+
+    return needResize;
+  }
+
   // animate cube
   function render(time) {
     time *= 0.001; // convert time into seconds
     // cube.rotation.x = time;
     // cube.rotation.y = time;
+
+    // update render function: set the aspect of the camera to the aspect of the canvas's display size. We can do that by looking at the canvas's clientWidth and clientHeight properties.
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
 
     // give each cube a different rotation
     cubes.forEach((cube, index) => {
