@@ -112,6 +112,10 @@ function crashCourseInit() {
     { duration: 0.5, y: Math.PI * 0.5, ease: Expo.out },
     "=-1.5"
   );
+
+  document.body.addEventListener("click", function() {
+    tl.play();
+  });
 }
 
 window.addEventListener("resize", () => {
